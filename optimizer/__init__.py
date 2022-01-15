@@ -48,13 +48,10 @@ def path_cost(path: Iterable[Location]) -> int:
     Multiply by movement efficiency as needed.
     """
     cost = 0
-    last: Location = None
+    last: Vector = Vector(0, 0)
     for location in path:
-        if last is None:
-            last = location
-            continue
-        cost += last.pos.distance_to(location.pos)
-        last = location
+        cost += last.distance_to(location.pos)
+        last = location.pos
     return cost
 
 def shortest_path(locations: Iterable[Location]) -> tuple[Location]:
