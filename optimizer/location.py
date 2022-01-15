@@ -1,4 +1,5 @@
-from functools import partial
+from __future__ import annotations
+from functools import cache, partial
 from typing import Iterable
 from itertools import permutations
 from dataclasses import dataclass
@@ -18,6 +19,9 @@ class Location:
 
     def __hash__(self) -> int:
         return hash((self.pos, self.time_required))
+
+    def __lt__(self, other: Location) -> bool:
+        return self.pos.pos < other.pos.pos
 
 def path_cost(path: Iterable[Location]) -> int:
     """Find the base cost of a path.
@@ -49,8 +53,9 @@ def shortest_path_heuristic(locations: Iterable[Location]) -> tuple[Location]:
     ...by assuming that sorting them by coordinates is optimal.
     This will probably be okayish but nowhere near the best.
     """
-    return tuple(sorted(locations, key=lambda loc: loc.pos.pos))
+    return tuple(sorted(locations))
 
+@cache
 def shortest_path(locations: Iterable[Location]) -> tuple[Location]:
     """Find the shortest path between all the locations.
 

@@ -49,7 +49,7 @@ class Robot:
               obstacles: list[Obstacle] = None,
               do_print: bool = True) -> int:
         cost = 0
-        path = shortest_path(locations)
+        path = shortest_path(tuple(sorted(locations)))
         if do_print:
             print('Robot', self.name)
         # Traverse the path
