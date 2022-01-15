@@ -44,6 +44,7 @@ def run2():
     [robot], locations, _ = read_info()
     path = shortest_path(locations)
     cost = 0
+    print('Robot', robot.name)
     # Traverse the path
     for location in path:
         for position in robot.pathfind(location.pos):
