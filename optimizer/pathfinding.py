@@ -44,7 +44,7 @@ def expand(node: Node, dest: Vector, queue: list[Node],
     if node.pos == dest:
         return node
     for direction in DIRECTIONS:
-        if direction in excluded:
+        if (node.pos + direction) in excluded:
             continue # do not expand this node
         heappush(queue, Node(node.pos + direction, dest,
                              node.path_length + 1, node))
