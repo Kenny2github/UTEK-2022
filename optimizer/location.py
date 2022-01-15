@@ -36,3 +36,17 @@ def shortest_path(locations: Iterable[Location]) -> tuple[Location]:
     ...by checking every single possible path.
     """
     return min(permutations(locations), key=path_cost)
+
+def aggregate(locations: Iterable[Location]) -> list[Location]:
+    """Aggregate locations to remove conflicts."""
+    aggregated: dict[Vector, Location] = {}
+    for location in locations:
+        candidate = aggregated.get(location.pos)
+        if candidate is not None:
+            if location.time_required > candidate.time_required:
+                # overwrite previous location that required shorter time
+                aggregated[location.pos] = location
+        else:
+            # set new location at that position
+            aggregated[location.pos] = location
+    return list(aggregated.values())

@@ -1,7 +1,7 @@
 import sys
 from .obstacle import Obstacle
 from .vector import Vector
-from .location import Location, shortest_path
+from .location import Location, aggregate
 from .robot import Robot
 
 def read_info():
@@ -16,6 +16,7 @@ def read_info():
     for _ in range(locationc):
         x, y, time = map(int, input().split())
         locations.append(Location(Vector(x, y), time))
+    locations = aggregate(locations)
 
     obstacles: list[Obstacle] = []
     for _ in range(obstaclec):
@@ -27,17 +28,7 @@ def read_info():
 def run1():
     robots, locations, _ = read_info()
     print('\n'.join(map(str, robots)))
-    aggregated: dict[Vector, Location] = {}
-    for location in locations:
-        candidate = aggregated.get(location.pos)
-        if candidate is not None:
-            if location.time_required > candidate:
-                # overwrite previous location that required shorter time
-                aggregated[location.pos] = location
-        else:
-            # set new location at that position
-            aggregated[location.pos] = location
-    for i, location in enumerate(aggregated.values(), start=1):
+    for i, location in enumerate(locations, start=1):
         print(f'Location Number: {i}; {location!s}')
 
 def run2():
