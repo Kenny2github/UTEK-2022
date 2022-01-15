@@ -1,5 +1,6 @@
 from dataclasses import dataclass
-from typing import Generator, Iterable
+from typing import Iterable
+from .location import Location, shortest_path
 from .obstacle import Obstacle
 from .pathfinding import pathfind as _pathfind
 from .vector import Vector
@@ -41,3 +42,31 @@ class Robot:
                     excluded.add(Vector(x, y))
         # don't include the starting position
         return _pathfind(self.pos, pos, excluded)[1:]
+
+    def visit(self, locations: list[Location],
+              obstacles: list[Obstacle] = None,
+              do_print: bool = True) -> int:
+        cost = 0
+        path = shortest_path(locations)
+        if do_print:
+            print('Robot', self.name)
+        # Traverse the path
+        for location in path:
+            for position in self.pathfind(location.pos, obstacles):
+                if do_print:
+                    print('move', position)
+                cost += self.move_efficiency
+            self.pos = location.pos
+            if do_print:
+                print('clean', location.pos)
+            cost += self.clean_efficiency * location.time_required
+        # return to home
+        for position in self.pathfind(Vector(0, 0), obstacles):
+            if do_print:
+                print('move', position)
+            cost += self.move_efficiency
+        if do_print:
+            print('rest\n')
+        self.pos = Vector(0, 0)
+        return cost
+
