@@ -41,7 +41,16 @@ def run1():
         print(f'Location Number: {i}; {location!s}')
 
 def run2():
-    pass
+    [robot], locations, _ = read_info()
+    cost = 0
+    for location in locations:
+        for position in robot.pathfind(location.pos):
+            print('move', position)
+            cost += robot.move_efficiency
+        print('clean', location.pos)
+        cost += robot.clean_efficiency
+    print('rest')
+    print(cost, file=sys.stderr)
 
 def run3():
     pass
