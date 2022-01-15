@@ -16,6 +16,12 @@ class Robot:
             f'Movement Efficiency: {self.move_efficiency}; ' \
             f'Cleaning Efficiency: {self.clean_efficiency};'
 
+    def __repr__(self) -> str:
+        return f'({self.name}, move: {self.move_efficiency} clean: {self.clean_efficiency})'
+
+    def __hash__(self) -> int:
+        return hash((self.name, self.move_efficiency, self.clean_efficiency))
+
     def get_direction(self, from_pos: Vector, to_pos: Vector) -> Vector:
         dv = to_pos - from_pos
         return Vector(

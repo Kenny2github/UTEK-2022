@@ -11,6 +11,12 @@ class Location:
     def __str__(self) -> str:
         return f'Time required: {self.time_required}; Location: {self.pos!s};'
 
+    def __repr__(self) -> str:
+        return f'{self.pos!s} {self.time_required}'
+
+    def __hash__(self) -> int:
+        return hash((self.pos, self.time_required))
+
 def path_cost(path: Iterable[Location]) -> int:
     """Find the base cost of a path.
 
