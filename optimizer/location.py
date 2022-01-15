@@ -1,6 +1,8 @@
+from functools import partial
 from typing import Iterable
 from itertools import permutations
 from dataclasses import dataclass
+from multiprocessing import Process, Queue
 from .vector import Vector
 
 @dataclass
@@ -30,12 +32,43 @@ def path_cost(path: Iterable[Location]) -> int:
     cost += last.distance_to(Vector(0, 0))
     return cost
 
-def shortest_path(locations: Iterable[Location]) -> tuple[Location]:
-    """Find the shortest path between all the locations
+
+def shortest_path_guaranteed(locations: Iterable[Location], q: Queue):
+    """Find the shortest path between all the locations.
 
     ...by checking every single possible path.
+    This is guaranteed to find the shortest path, but may
+    take unreasonably long for large input, since it runs in O(n!) time.
+    It returns the answer into an argument, for use with multiprocessing.
     """
-    return min(permutations(locations), key=path_cost)
+    q.put(min(permutations(locations), key=path_cost))
+
+def shortest_path_heuristic(locations: Iterable[Location]) -> tuple[Location]:
+    """Find the shortest path between all the locations.
+
+    ...by assuming that sorting them by coordinates is optimal.
+    This will probably be okayish but nowhere near the best.
+    """
+    return tuple(sorted(locations, key=lambda loc: loc.pos.pos))
+
+def shortest_path(locations: Iterable[Location]) -> tuple[Location]:
+    """Find the shortest path between all the locations.
+
+    This will try a brute force method, or use a best guess if that
+    takes too long.
+    """
+    q = Queue()
+    p = Process(target=partial(shortest_path_guaranteed, locations, q))
+    p.start()
+
+    # wait 20 seconds for the process to finish
+    p.join(20)
+
+    if p.is_alive(): # 20 seconds have passed
+        p.terminate() # give up
+        p.join()
+        return shortest_path_heuristic(locations)
+    return q.get_nowait()
 
 def aggregate(locations: Iterable[Location]) -> list[Location]:
     """Aggregate locations to remove conflicts."""
