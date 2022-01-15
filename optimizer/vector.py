@@ -36,3 +36,9 @@ class Vector:
 
     def __neg__(self) -> Vector:
         return self * -1
+
+    def __abs__(self) -> int:
+        return max(abs(self.x), abs(self.y))
+
+    def distance_to(self, other: Vector) -> int:
+        return abs(other - self)

@@ -1,4 +1,6 @@
 import sys
+from itertools import permutations
+from typing import Iterable
 from .obstacle import Obstacle
 from .vector import Vector
 from .location import Location
@@ -40,10 +42,34 @@ def run1():
     for i, location in enumerate(aggregated.values(), start=1):
         print(f'Location Number: {i}; {location!s}')
 
+def path_cost(path: Iterable[Location]) -> int:
+    """Find the base cost of a path.
+
+    Multiply by movement efficiency as needed.
+    """
+    cost = 0
+    last: Location = None
+    for location in path:
+        if last is None:
+            last = location
+            continue
+        cost += last.pos.distance_to(location.pos)
+        last = location
+    return cost
+
+def shortest_path(locations: Iterable[Location]) -> tuple[Location]:
+    """Find the shortest path between all the locations
+
+    ...by checking every single possible path.
+    """
+    return min(permutations(locations), key=path_cost)
+
 def run2():
     [robot], locations, _ = read_info()
+    path = shortest_path(locations)
     cost = 0
-    for location in locations:
+    # Traverse the path
+    for location in path:
         for position in robot.pathfind(location.pos):
             print('move', position)
             cost += robot.move_efficiency
