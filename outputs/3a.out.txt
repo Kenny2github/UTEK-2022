@@ -1,0 +1,26 @@
+Robot fast
+move 1 1
+move 2 1
+move 3 1
+move 4 2
+move 5 3
+move 6 4
+move 7 5
+move 8 5
+clean 8 5
+move 7 6
+move 6 7
+move 5 8
+move 5 9
+clean 5 9
+move 4 8
+clean 4 8
+move 3 7
+move 2 6
+move 1 5
+move 0 4
+move 0 3
+move 0 2
+move 0 1
+move 0 0
+rest

@@ -41,27 +41,26 @@ def run1():
         print(f'Location Number: {i}; {location!s}')
 
 def run2():
-    [robot], locations, _ = read_info()
+    [robot], locations, obstacles = read_info()
     path = shortest_path(locations)
     cost = 0
     print('Robot', robot.name)
     # Traverse the path
     for location in path:
-        for position in robot.pathfind(location.pos):
+        for position in robot.pathfind(location.pos, obstacles):
             print('move', position)
             cost += robot.move_efficiency
         robot.pos = location.pos
         print('clean', location.pos)
         cost += robot.clean_efficiency * location.time_required
     # return to home
-    for position in robot.pathfind(Vector(0, 0)):
+    for position in robot.pathfind(Vector(0, 0), obstacles):
         print('move', position)
         cost += robot.move_efficiency
     print('rest')
     print(cost, file=sys.stderr)
 
-def run3():
-    pass
+run3 = run2
 
 def run4():
     pass
