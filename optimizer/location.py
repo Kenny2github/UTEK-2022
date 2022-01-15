@@ -21,6 +21,7 @@ def path_cost(path: Iterable[Location]) -> int:
     for location in path:
         cost += last.distance_to(location.pos)
         last = location.pos
+    cost += last.distance_to(Vector(0, 0))
     return cost
 
 def shortest_path(locations: Iterable[Location]) -> tuple[Location]:

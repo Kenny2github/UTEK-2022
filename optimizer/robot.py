@@ -28,9 +28,8 @@ class Robot:
         direction = self.get_direction(self.pos, pos)
         current = self.pos
         while current.x != pos.x and current.y != pos.y:
-            yield current
             current += direction
-        yield current
+            yield current
         direction = self.get_direction(current, pos)
         while current != pos:
             current += direction

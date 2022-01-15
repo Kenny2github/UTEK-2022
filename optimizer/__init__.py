@@ -49,8 +49,13 @@ def run2():
         for position in robot.pathfind(location.pos):
             print('move', position)
             cost += robot.move_efficiency
+        robot.pos = location.pos
         print('clean', location.pos)
         cost += robot.clean_efficiency
+    # return to home
+    for position in robot.pathfind(Vector(0, 0)):
+        print('move', position)
+        cost += robot.move_efficiency
     print('rest')
     print(cost, file=sys.stderr)
 
