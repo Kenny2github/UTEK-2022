@@ -1,0 +1,7 @@
+#!/bin/bash
+if [ -z $2 ]; then
+	echo Usage: $0 [part number] [output letter label, a/b/c]
+	echo All arguments are required.
+else
+	python3 -m optimizer $1 < inputs/$1$2.in.txt > outputs/$1$2.out.txt
+fi
