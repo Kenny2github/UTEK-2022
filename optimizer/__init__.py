@@ -2,7 +2,7 @@ import sys
 from .obstacle import Obstacle
 from .vector import Vector
 from .location import Location, aggregate
-from .robot import Robot
+from .robot import Robot, optimize
 
 def read_info():
     robotc, locationc, obstaclec = map(int, input().split())
@@ -41,8 +41,12 @@ def run2():
 run3 = run2
 
 def run4():
-    pass
+    robots, locations, obstacles = read_info()
+    cost = 0
+    results = optimize(robots, locations, obstacles)
+    print(results, file=sys.stderr)
+    for robot, path in results.items():
+        cost += robot.visit(path, obstacles)
+    print(cost, file=sys.stderr)
 
-def run5():
-    pass
-
+run5 = run4

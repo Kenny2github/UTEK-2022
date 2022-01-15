@@ -1,7 +1,9 @@
 from dataclasses import dataclass
+from itertools import permutations
 from typing import Iterable
 from .location import Location, shortest_path
 from .obstacle import Obstacle
+from .partitions import partitions
 from .pathfinding import pathfind as _pathfind
 from .vector import Vector
 
@@ -70,3 +72,26 @@ class Robot:
         self.pos = Vector(0, 0)
         return cost
 
+def optimize(robots: Iterable[Robot], locations: Iterable[Location],
+             obstacles: Iterable[Obstacle]) -> dict[Robot, list[Location]]:
+    robots = list(robots)
+    locations = list(locations)
+    results = {}
+    best_cost: int = None
+    # when there are fewer robots than locations,
+    # some robots will be mapped to multiple locations
+    for partition in partitions(locations):
+        if len(partition) != len(robots):
+            continue
+        for permo in permutations(robots):
+            # when there are fewer locations than robots, some of the robots
+            # will go unused, but eventually they will be checked as part of
+            # other permutations of this combination
+            tmp_results = {robot: part for robot, part in zip(permo, partition)}
+            cost = 0
+            for robot, path in tmp_results.items():
+                cost += robot.visit(path, obstacles, False)
+            if best_cost is None or cost < best_cost:
+                results = tmp_results
+                best_cost = cost
+    return results
