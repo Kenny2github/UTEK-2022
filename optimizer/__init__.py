@@ -20,7 +20,7 @@ def read_info():
     obstacles: list[Obstacle] = []
     for _ in range(obstaclec):
         x1, y1, x2, y2 = map(int, input().split())
-        obstacles.append(Vector(x1, y1), Vector(x2, y2))
+        obstacles.append(Obstacle(Vector(x1, y1), Vector(x2, y2)))
 
     return robots, locations, obstacles
 
