@@ -4,7 +4,7 @@ from .vector import Vector
 from .location import Location, aggregate
 from .robot import Robot, optimize
 
-sys.setrecursionlimit(10000)
+#sys.setrecursionlimit(10000)
 
 def read_info() -> tuple[list[Robot], list[Location], list[Obstacle]]:
     robotc, locationc, obstaclec = map(int, input().split())

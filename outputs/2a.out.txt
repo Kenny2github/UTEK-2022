@@ -5,19 +5,19 @@ move 3 3
 move 3 4
 move 3 5
 clean 3 5
-move 4 6
-move 5 6
-move 6 6
+move 4 4
+move 5 4
+clean 5 4
+move 6 5
 move 7 6
 move 8 6
 clean 8 6
 move 7 5
 move 6 4
-move 5 4
-clean 5 4
-move 4 3
-move 3 2
-move 2 1
+move 5 3
+move 4 2
+move 3 1
+move 2 0
 move 1 0
 move 0 0
 rest
